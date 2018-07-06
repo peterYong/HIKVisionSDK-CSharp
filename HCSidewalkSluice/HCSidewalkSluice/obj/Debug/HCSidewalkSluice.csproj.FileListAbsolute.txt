@@ -1,0 +1,6 @@
+E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\bin\Debug\HCSidewalkSluice.exe.config
+E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\obj\Debug\HCSidewalkSluice.csprojResolveAssemblyReference.cache
+E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\bin\Debug\HCSidewalkSluice.exe
+E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\bin\Debug\HCSidewalkSluice.pdb
+E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\obj\Debug\HCSidewalkSluice.exe
+E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\obj\Debug\HCSidewalkSluice.pdb
