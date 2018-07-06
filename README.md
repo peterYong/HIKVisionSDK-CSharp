@@ -1,5 +1,6 @@
 # HIKVisionSDK-CSharp
 Use C# to connect Hikvision devices (such as sidewalk gates).
+But it's not complete
 
 【注意事项】
 ------------------------------------
