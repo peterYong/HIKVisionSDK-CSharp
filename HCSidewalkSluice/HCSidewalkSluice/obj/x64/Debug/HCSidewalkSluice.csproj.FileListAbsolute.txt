@@ -4,3 +4,9 @@ E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidew
 E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\bin\HCSidewalkSluice.exe
 E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\bin\HCSidewalkSluice.pdb
 E:\26、北京高速大厦_201805\人行道闸_20180620\HCSidewalkSluice\HCSidewalkSluice\obj\x64\Debug\HCSidewalkSluice.csprojResolveAssemblyReference.cache
+F:\GitHub\HIKVisionSDK-CSharp\HCSidewalkSluice\HCSidewalkSluice\bin\HCSidewalkSluice.exe.config
+F:\GitHub\HIKVisionSDK-CSharp\HCSidewalkSluice\HCSidewalkSluice\obj\x64\Debug\HCSidewalkSluice.exe
+F:\GitHub\HIKVisionSDK-CSharp\HCSidewalkSluice\HCSidewalkSluice\obj\x64\Debug\HCSidewalkSluice.pdb
+F:\GitHub\HIKVisionSDK-CSharp\HCSidewalkSluice\HCSidewalkSluice\bin\HCSidewalkSluice.exe
+F:\GitHub\HIKVisionSDK-CSharp\HCSidewalkSluice\HCSidewalkSluice\bin\HCSidewalkSluice.pdb
+F:\GitHub\HIKVisionSDK-CSharp\HCSidewalkSluice\HCSidewalkSluice\obj\x64\Debug\HCSidewalkSluice.csprojResolveAssemblyReference.cache

@@ -675,20 +675,20 @@ namespace HCSidewalkSluice
             /// <summary>
             /// 报警时间 
             /// </summary>
-            NET_DVR_TIME struTime;
+            public NET_DVR_TIME struTime;
             /// <summary>
             /// 网络操作的用户名
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_NAMELEN, ArraySubType = UnmanagedType.I1)]
-            byte[] sNetUser;
+            public byte[] sNetUser;
             /// <summary>
             /// 远程主机地址
             /// </summary>
-            NET_DVR_IPADDR struRemoteHostAddr;
+            public NET_DVR_IPADDR struRemoteHostAddr;
             /// <summary>
             /// 报警信息详细参数 
             /// </summary>
-            NET_DVR_ACS_EVENT_INFO struAcsEventInfo;
+            public NET_DVR_ACS_EVENT_INFO struAcsEventInfo;
             /// <summary>
             /// 图片数据大小，不为0是表示后面带数据
             /// </summary>
@@ -696,12 +696,12 @@ namespace HCSidewalkSluice
             /// <summary>
             /// 图片数据缓冲区
             /// </summary>
-            IntPtr pPicData;
+            public IntPtr pPicData;
             /// <summary>
             /// 保留，置为0
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 24, ArraySubType = UnmanagedType.I1)]
-            byte[] byRes;
+            public byte[] byRes;
         }
 
         /// <summary>
@@ -720,7 +720,183 @@ namespace HCSidewalkSluice
         /// 事件
         /// </summary>
         public const int MAJOR_EVENT = 0x04;
-        
+
+        #region 操作
+        public const int MINOR_LOCAL_LOGIN = 0x50;//本地登录
+        public const int MINOR_LOCAL_UPGRADE = 0x5a;// 本地升级
+        public const int MINOR_REMOTE_LOGIN = 0x70;//远程登录
+        public const int MINOR_REMOTE_LOGOUT = 0x71;//远程注销登陆
+        public const int MINOR_REMOTE_ARM = 0x79;// 远程布防
+        public const int MINOR_REMOTE_DISARM = 0x7a;// 远程撤防
+        public const int MINOR_REMOTE_REBOOT = 0x7b;// 远程重启
+        public const int MINOR_REMOTE_UPGRADE = 0x7e;// 远程升级
+        public const int MINOR_REMOTE_CFGFILE_OUTPUT = 0x86;// 远程导出配置文件
+        public const int MINOR_REMOTE_CFGFILE_INTPUT = 0x87;// 远程导入配置文件
+        public const int MINOR_REMOTE_ALARMOUT_OPEN_MAN = 0xd6;// 远程手动开启报警输出
+        public const int MINOR_REMOTE_ALARMOUT_CLOSE_MAN = 0xd7;// 远程手动关闭报警输出
+        public const int MINOR_REMOTE_OPEN_DOOR = 0x400;// 远程开门
+        public const int MINOR_REMOTE_CLOSE_DOOR = 0x401;// 远程关门（对于梯控，表示受控） 
+        public const int MINOR_REMOTE_ALWAYS_OPEN = 0x402;// 远程常开（对于梯控，表示自由） 
+        public const int MINOR_REMOTE_ALWAYS_CLOSE = 0x403;// 远程常关（对于梯控，表示禁用） 
+        public const int MINOR_REMOTE_CHECK_TIME = 0x404;// 远程手动校时
+        public const int MINOR_NTP_CHECK_TIME = 0x405;// NTP自动校时
+        public const int MINOR_REMOTE_CLEAR_CARD = 0x406;// 远程清空卡号
+        public const int MINOR_REMOTE_RESTORE_CFG = 0x407;// 远程恢复默认参数
+        public const int MINOR_ALARMIN_ARM = 0x408;// 防区布防
+        public const int MINOR_ALARMIN_DISARM = 0x409;// 防区撤防
+        public const int MINOR_LOCAL_RESTORE_CFG = 0x40a;// 本地恢复默认参数
+        public const int MINOR_REMOTE_CAPTURE_PIC = 0x40b;// 远程抓拍
+        public const int MINOR_MOD_NET_REPORT_CFG = 0x40c;// 修改网络中心参数配置
+        public const int MINOR_MOD_GPRS_REPORT_PARAM = 0x40d;// 修改GPRS中心参数配置
+        public const int MINOR_MOD_REPORT_GROUP_PARAM = 0x40e;// 修改中心组参数配置
+        public const int MINOR_UNLOCK_PASSWORD_OPEN_DOOR = 0x40f;// 解除码输入
+        public const int MINOR_AUTO_RENUMBER = 0x410;// 自动重新编号
+        public const int MINOR_AUTO_COMPLEMENT_NUMBER = 0x411;// 自动补充编号
+        public const int MINOR_NORMAL_CFGFILE_INPUT = 0x412;// 导入普通配置文件
+        public const int MINOR_NORMAL_CFGFILE_OUTTPUT = 0x413;// 导出普通配置文件
+        public const int MINOR_CARD_RIGHT_INPUT = 0x414;// 导入卡权限参数
+        public const int MINOR_CARD_RIGHT_OUTTPUT = 0x415;// 导出卡权限参数
+        public const int MINOR_LOCAL_USB_UPGRADE = 0x416;// 本地U盘升级
+        public const int MINOR_REMOTE_VISITOR_CALL_LADDER = 0x417; //访客呼梯
+        public const int MINOR_REMOTE_HOUSEHOLD_CALL_LADDER = 0x418; //住户呼梯
+        public const int MINOR_REMOTE_ACTUAL_GUARD = 0x419;// 远程实时布防
+        public const int MINOR_REMOTE_ACTUAL_UNGUARD = 0x41a;// 远程实时撤防
+        public const int MINOR_REMOTE_CONTROL_NOT_CODE_OPER_FAILED = 0x41b;// 遥控器未对码操作失败
+        public const int MINOR_REMOTE_CONTROL_CLOSE_DOOR = 0x41c;// 遥控器关门
+        public const int MINOR_REMOTE_CONTROL_OPEN_DOOR = 0x41d;// 遥控器开门
+        public const int MINOR_REMOTE_CONTROL_ALWAYS_OPEN_DOOR = 0x41e;// 遥控器常开门
+
+        #endregion
+
+        #region 事件
+        public const int MINOR__LEGAL_CARD_PASS = 0x01;// 合法卡认证通过
+        public const int MINOR__CARD_AND_PSW_PASS = 0x02;// 刷卡加密码认证通过
+        public const int MINOR__CARD_AND_PSW_FAIL = 0x03;// 刷卡加密码认证失败
+        public const int MINOR__CARD_AND_PSW_TIMEOUT = 0x04;// 数卡加密码认证超时
+        public const int MINOR__CARD_AND_PSW_OVER_TIME = 0x05;// 刷卡加密码超次
+        public const int MINOR__CARD_NO_RIGHT = 0x06;// 未分配权限
+        public const int MINOR__CARD_INVALID_PERIOD = 0x07;// 无效时段
+        public const int MINOR__CARD_OUT_OF_DATE = 0x08;// 卡号过期
+        public const int MINOR__INVALID_CARD = 0x09;// 无此卡号
+        public const int MINOR__ANTI_SNEAK_FAIL = 0x0a;// 反潜回认证失败
+        public const int MINOR__INTERLOCK_DOOR_NOT_CLOSE = 0x0b;// 互锁门未关闭
+                                                                //        public const int MINOR__NOT_BELONG_MULTI_GROUP = 0x0c;// 卡不属于多重认证群组
+                                                                //        public const int MINOR__INVALID_MULTI_VERIFY_PERIOD = 0x0d;// 卡不在多重认证时间段内
+                                                                //public const int MINOR__MULTI_VERIFY_SUPER_RIGHT_FAIL 0x0e 多重认证模式超级权限认证失败
+                                                                //public const int MINOR__MULTI_VERIFY_REMOTE_RIGHT_FAIL 0x0f 多重认证模式远程认证失败
+                                                                //public const int MINOR__MULTI_VERIFY_SUCCESS 0x10 多重认证成功
+        public const int MINOR__LEADER_CARD_OPEN_BEGIN = 0x11;// 首卡开门开始
+        public const int MINOR__LEADER_CARD_OPEN_END = 0x12;// 首卡开门结束
+        public const int MINOR__ALWAYS_OPEN_BEGIN = 0x13;// 常开状态开始
+        public const int MINOR__ALWAYS_OPEN_END = 0x14;// 常开状态结束
+        public const int MINOR__LOCK_OPEN = 0x15;// 门锁打开
+        public const int MINOR__LOCK_CLOSE = 0x16;// 门锁关闭
+        public const int MINOR__DOOR_BUTTON_PRESS = 0x17;// 开门按钮打开
+        public const int MINOR__DOOR_BUTTON_RELEASE = 0x18;// 开门按钮放开
+        public const int MINOR__DOOR_OPEN_NORMAL = 0x19;// C 
+        public const int MINOR__DOOR_CLOSE_NORMAL = 0x1a;// 正常关门（门磁） 
+        public const int MINOR__DOOR_OPEN_ABNORMAL = 0x1b;// 门异常打开（门磁） 
+        public const int MINOR__DOOR_OPEN_TIMEOUT = 0x1c;// 门打开超时（门磁）  
+        public const int MINOR__ALARMOUT_ON = 0x1d;// 报警输出打开
+        public const int MINOR__ALARMOUT_OFF = 0x1e;// 报警输出关闭
+        public const int MINOR__ALWAYS_CLOSE_BEGIN = 0x1f;// 常关状态开始
+        public const int MINOR__ALWAYS_CLOSE_END = 0x20;// 常关状态结束
+                                                        //public const int MINOR__MULTI_VERIFY_NEED_REMOTE_OPEN 0x21 多重多重认证需要远程开门
+                                                        //public const int MINOR__MULTI_VERIFY_SUPERPASSWD_VERIFY_SUCCESS 0x22 多重认证超级密码认证成功事件
+                                                        //public const int MINOR__MULTI_VERIFY_REPEAT_VERIFY 0x23 多重认证重复认证事件
+                                                        //public const int MINOR__MULTI_VERIFY_TIMEOUT 0x24 多重认证重复认证事件
+        public const int MINOR__DOORBELL_RINGING = 0x25;// 门铃响
+                                                        //public const int MINOR__FINGERPRINT_COMPARE_PASS 0x26 指纹比对通过
+                                                        //public const int MINOR__FINGERPRINT_COMPARE_FAIL 0x27 指纹比对失败
+                                                        //public const int MINOR__CARD_FINGERPRINT_VERIFY_PASS 0x28 刷卡加指纹认证通过
+                                                        //public const int MINOR__CARD_FINGERPRINT_VERIFY_FAIL 0x29 刷卡加指纹认证失败
+                                                        //public const int MINOR__CARD_FINGERPRINT_VERIFY_TIMEOUT 0x2a 刷卡加指纹认证超时
+                                                        //public const int MINOR__CARD_FINGERPRINT_PASSWD_VERIFY_PASS 0x2b 刷卡加指纹加密码认证通过
+                                                        //public const int MINOR__CARD_FINGERPRINT_PASSWD_VERIFY_FAIL 0x2c 刷卡加指纹加密码认证失败
+                                                        //public const int MINOR__CARD_FINGERPRINT_PASSWD_VERIFY_TIMEOUT 0x2d 刷卡加指纹加密码认证超时
+                                                        //public const int MINOR__FINGERPRINT_PASSWD_VERIFY_PASS 0x2e 指纹加密码认证通过
+                                                        //public const int MINOR__FINGERPRINT_PASSWD_VERIFY_FAIL 0x2f 指纹加密码认证失败
+                                                        //public const int MINOR__FINGERPRINT_PASSWD_VERIFY_TIMEOUT 0x30 指纹加密码认证超时
+                                                        //public const int MINOR__FINGERPRINT_INEXISTENCE 0x31 指纹不存在
+        public const int MINOR__CARD_PLATFORM_VERIFY = 0x32;// 刷卡平台认证
+        public const int MINOR__CALL_CENTER = 0x33;// 呼叫中心事件
+        public const int MINOR__FIRE_RELAY_TURN_ON_DOOR_ALWAYS_OPEN = 0x34;// 消防继电器导通触发门常开
+        public const int MINOR__FIRE_RELAY_RECOVER_DOOR_RECOVER_NORMAL = 0x35;// 消防继电器恢复门恢复正常
+                                                                              //public const int MINOR__FACE_AND_FP_VERIFY_PASS 0x36 人脸加指纹认证通过
+                                                                              //public const int MINOR__FACE_AND_FP_VERIFY_FAIL  0x37 人脸加指纹认证失败
+                                                                              //public const int MINOR__FACE_AND_FP_VERIFY_TIMEOUT 0x38 人脸加指纹认证超时
+                                                                              //public const int MINOR__FACE_AND_PW_VERIFY_PASS 0x39 人脸加密码认证通过
+                                                                              //public const int MINOR__FACE_AND_PW_VERIFY_FAIL 0x3a 人脸加密码认证失败
+                                                                              //public const int MINOR__FACE_AND_PW_VERIFY_TIMEOUT 0x3b 人脸加密码认证超时
+                                                                              //public const int MINOR__FACE_AND_CARD_VERIFY_PASS 0x3c 人脸加刷卡认证通过
+                                                                              //public const int MINOR__FACE_AND_CARD_VERIFY_FAIL 0x3d 人脸加刷卡认证失败
+                                                                              //public const int MINOR__FACE_AND_CARD_VERIFY_TIMEOUT 0x3e 人脸加刷卡认证超时
+                                                                              //public const int MINOR__FACE_AND_PW_AND_FP_VERIFY_PASS 0x3f 人脸加密码加指纹认证通过
+                                                                              //public const int MINOR__FACE_AND_PW_AND_FP_VERIFY_FAIL 0x40 人脸加密码加指纹认证失败
+                                                                              //public const int MINOR__FACE_AND_PW_AND_FP_VERIFY_TIMEOUT 0x41 人脸加密码加指纹认证超时
+                                                                              //public const int MINOR__FACE_CARD_AND_FP_VERIFY_PASS 0x42 人脸加刷卡加指纹认证通过
+                                                                              //public const int MINOR__FACE_CARD_AND_FP_VERIFY_FAIL 0x43 人脸加刷卡加指纹认证失败
+                                                                              //public const int MINOR__FACE_CARD_AND_FP_VERIFY_TIMEOUT 0x44 人脸加刷卡加指纹认证超时
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FP_VERIFY_PASS 0x45 工号加指纹认证通过
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FP_VERIFY_FAIL 0x46 工号加指纹认证失败
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FP_VERIFY_TIMEOUT 0x47 工号加指纹认证超时
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FP_AND_PW_VERIFY_PASS 0x48 工号加指纹加密码认证通过
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FP_AND_PW_VERIFY_FAIL 0x49 工号加指纹加密码认证失败
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FP_AND_PW_VERIFY_TIMEOUT 0x4a 工号加指纹加密码认证超时
+                                                                              //public const int MINOR__FACE_VERIFY_PASS 0x4b 人脸认证通过
+                                                                              //public const int MINOR__FACE_VERIFY_FAIL 0x4c 人脸认证失败
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FACE_VERIFY_PASS 0x4d 工号加人脸认证通过
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FACE_VERIFY_FAIL 0x4e 工号加人脸认证失败
+                                                                              //public const int MINOR__EMPLOYEENO_AND_FACE_VERIFY_TIMEOUT 0x4f 工号加人脸认证超时
+                                                                              //public const int MINOR__FACE_RECOGNIZE_FAIL 0x50 人脸识别失败
+        public const int MINOR__FIRSTCARD_AUTHORIZE_BEGIN = 0x51;// 首卡授权开始
+        public const int MINOR__FIRSTCARD_AUTHORIZE_END = 0x52;// 首卡授权结束
+                                                               //public const int MINOR__DOORLOCK_INPUT_SHORT_CIRCUIT 0x53 门锁输入短路报警
+                                                               //public const int MINOR__DOORLOCK_INPUT_BROKEN_CIRCUIT 0x54 门锁输入断路报警
+                                                               //public const int MINOR__DOORLOCK_INPUT_EXCEPTION 0x55 门锁输入异常报警
+                                                               //public const int MINOR__DOORCONTACT_INPUT_SHORT_CIRCUIT 0x56 门磁输入短路报警
+                                                               //public const int MINOR__DOORCONTACT_INPUT_BROKEN_CIRCUIT 0x57 门磁输入断路报警
+                                                               //public const int MINOR__DOORCONTACT_INPUT_EXCEPTION 0x58 门磁输入异常报警
+                                                               //public const int MINOR__OPENBUTTON_INPUT_SHORT_CIRCUIT  0x59 开门按钮输入短路报警
+                                                               //public const int MINOR__OPENBUTTON_INPUT_BROKEN_CIRCUIT  0x5a 开门按钮输入断路报警
+                                                               //public const int MINOR__OPENBUTTON_INPUT_EXCEPTION 0x5b 开门按钮输入异常报警
+                                                               //public const int MINOR__DOORLOCK_OPEN_EXCEPTION 0x5c 门锁异常打开
+                                                               //public const int MINOR__DOORLOCK_OPEN_TIMEOUT 0x5d 门锁打开超时
+                                                               //public const int MINOR__FIRSTCARD_OPEN_WITHOUT_AUTHORIZE 0x5e 首卡未授权开门失败
+                                                               //public const int MINOR__CALL_LADDER_RELAY_BREAK 0x5f 呼梯继电器断开
+                                                               //public const int MINOR__CALL_LADDER_RELAY_CLOSE 0x60 呼梯继电器闭合
+                                                               //public const int MINOR__AUTO_KEY_RELAY_BREAK 0x61 自动按键继电器断开
+                                                               //public const int MINOR__AUTO_KEY_RELAY_CLOSE 0x62 自动按键继电器闭合
+                                                               //public const int MINOR__KEY_CONTROL_RELAY_BREAK 0x63 按键梯控继电器断开
+                                                               //public const int MINOR__KEY_CONTROL_RELAY_CLOSE 0x64 按键梯控继电器闭合
+                                                               //public const int MINOR__EMPLOYEENO_AND_PW_PASS 0x65 工号加密码认证通过
+                                                               //public const int MINOR__EMPLOYEENO_AND_PW_FAIL 0x66 工号加密码认证失败
+                                                               //public const int MINOR__EMPLOYEENO_AND_PW_TIMEOUT 0x67 工号加密码认证超时
+                                                               //public const int MINOR__HUMAN_DETECT_FAIL 0x68 真人检测失败
+                                                               //public const int MINOR__PEOPLE_AND_ID_CARD_COMPARE_PASS 0x69 人证比对通过
+                                                               //public const int MINOR__PEOPLE_AND_ID_CARD_COMPARE_FAIL 0x70 人证比对失败
+        public const int MINOR__CERTIFICATE_BLACK_LIST = 0x71;// 黑名单事件
+                                                              //public const int MINOR__LEGAL_MESSAGE 0x72 合法短信
+                                                              //public const int MINOR__ILLEGAL_MESSAGE 0x73 非法短信
+                                                              //public const int MINOR__MAC_DETECT 0x74 MAC侦测
+        public const int MINOR__DOOR_OPEN_OR_DORMANT_FAIL = 0x75;// 门状态常闭或休眠状态认证失败
+        public const int MINOR__AUTH_PLAN_DORMANT_FAIL = 0x76;// 认证计划休眠模式认证失败
+        public const int MINOR__CARD_ENCRYPT_VERIFY_FAIL = 0x77;// 卡加密校验失败
+        public const int MINOR__SUBMARINEBACK_REPLY_FAIL = 0x78;// 反潜回服务器应答失败
+        public const int MINOR__TRAILING = 0x85;// 尾随通行
+        public const int MINOR__REVERSE_ACCESS = 0x86;// 反向闯入
+        public const int MINOR__FORCE_ACCESS = 0x87;// 外力冲撞
+        public const int MINOR__CLIMBING_OVER_GATE = 0x88;// 翻越
+        public const int MINOR__PASSING_TIMEOUT = 0x89;// 通行超时
+        public const int MINOR__INTRUSION_ALARM = 0x8a;// 误闯报警
+        public const int MINOR__FREE_GATE_PASS_NOT_AUTH = 0x8b;// 闸机自由通行时未认证通过
+        public const int MINOR__DROP_ARM_BLOCK = 0x8c;// 摆臂被阻挡
+        public const int MINOR__DROP_ARM_BLOCK_RESUME = 0x8d;// 摆臂阻挡消除
+
+
+        #endregion
+
+
 
         /// <summary>
         /// 时间参数结构体
@@ -896,7 +1072,7 @@ namespace HCSidewalkSluice
         /// 身份证刷卡信息上传结构体。
         /// </summary>
         [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-        public struct  NET_DVR_ID_CARD_INFO_ALARM
+        public struct NET_DVR_ID_CARD_INFO_ALARM
         {
             //DWORD dwSize;
             //NET_DVR_ID_CARD_INFO struIDCardCfg;
@@ -956,11 +1132,63 @@ namespace HCSidewalkSluice
         [StructLayoutAttribute(LayoutKind.Sequential)]
         public struct NET_DVR_SETUPALARM_PARAM
         {
+            /// <summary>
+            /// 结构体大小
+            /// </summary>
             public uint dwSize;
-            public byte byLevel;//布防优先级：0- 一等级（高），1- 二等级（中），2- 三等级（低，保留）
-            public byte byAlarmInfoType;//上传报警信息类型（智能交通摄像机支持）：0- 老报警信息（NET_DVR_PLATE_RESULT），1- 新报警信息(NET_ITS_PLATE_RESULT) 
-            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 14, ArraySubType = UnmanagedType.I1)]
-            public byte[] byRes;//这里保留音频的压缩参数 
+            /// <summary>
+            /// //布防优先级：0- 一等级（高），1- 二等级（中），2- 三等级（低）
+            /// </summary>
+            public byte byLevel;
+            /// <summary>
+            /// 智能交通报警信息上传类型：0- 老报警信息（NET_DVR_PLATE_RESULT），1- 新报警信息(NET_ITS_PLATE_RESULT) 
+            /// </summary>
+            public byte byAlarmInfoType;
+            /// <summary>
+            /// 0- 移动侦测、视频丢失、遮挡、IO信号量等报警信息以普通方式上传（报警类型：COMM_ALARM_V30，报警信息结构体：NET_DVR_ALARMINFO_V30），1- 报警信息以数据可变长方式上传（报警类型：COMM_ALARM_V40，报警信息结构体：NET_DVR_ALARMINFO_V40，设备若不支持则仍以普通方式上传） 
+            /// </summary>
+            public byte byRetAlarmTypeV40;
+            /// <summary>
+            /// CVR上传报警信息类型(仅对接CVR时有效)：0- COMM_ALARM_DEVICE（对应报警信息结构体：NET_DVR_ALARMINFO_DEV），1- COMM_ALARM_DEVICE_V40（对应报警信息结构体：NET_DVR_ALARMINFO_DEV_V40） 
+            /// </summary>
+            public byte byRetDevInfoVersion;
+            /// <summary>
+            /// VQD报警上传类型(仅对接VQD诊断功能的设备有效)：0- COMM_ALARM_VQD（对应报警信息结构体：NET_DVR_VQD_DIAGNOSE_INFO），1- COMM_ALARM_VQD_EX（对应报警信息结构体：NET_DVR_VQD_ALARM，包含前端设备信息和抓拍图片） 
+            /// </summary>
+            public byte byRetVQDAlarmType;
+            /// <summary>
+            /// 人脸报警信息类型：1- 人脸侦测报警(报警类型：COMM_ALARM_FACE_DETECTION，NET_DVR_FACE_DETECTION)，0- 人脸抓拍报警(报警类型：COMM_UPLOAD_FACESNAP_RESULT，NET_VCA_FACESNAP_RESULT) 
+            /// </summary>
+            public byte byFaceAlarmDetection;
+            /// <summary>
+            /// 按位表示，每一位取值表示不同的能力,bit0- 表示二级布防是否上传图片，值：0-上传，1-不上传,Bit1- 表示是否启用断网续传数据确认机制，值：0-不开启，1-开启
+            /// </summary>
+            public byte bySupport;
+            /// <summary>
+            /// 断网续传类型（设备目前只支持一个断网续传布防连接），按位表示，值：0- 不续传，1- 续传.bit0- 车牌检测（IPC）,bit1- 客流统计（IPC）,bit2- 热度图统计（IPC）,bit3- 人脸抓拍（IPC）,bit4- 人脸对比（IPC）.例如：byBrokenNetHttp&0x1==0 表示车牌检测结果不续传
+            /// </summary>
+            public byte byBrokenNetHttp;
+            /// <summary>
+            /// 任务处理号 
+            /// </summary>
+            public Int16 wTaskNo;
+            /// <summary>
+            /// 布防类型：0-客户端布防，1-实时布防 (新增的布防方式，主要用于其他设备对门禁设备的布防，最多支持4路实时布防，不支持离线事件上传。)
+            /// </summary>
+            public byte byDeployType;
+            /// <summary>
+            /// 保留，置为0 
+            /// </summary>
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.I1)]
+            public byte[] byRes1;
+            /// <summary>
+            /// 报警图片数据类型，按位表示：
+            /// </summary>
+            public byte byAlarmTypeURL;
+            /// <summary>
+            /// 按位表示，bit0表示是否上传副驾驶人脸子图: 0- 不上传，1- 上传 
+            /// </summary>
+            public byte byCustomCtrl;
         }
 
 

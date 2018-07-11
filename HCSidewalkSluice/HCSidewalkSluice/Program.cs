@@ -14,12 +14,10 @@ namespace HCSidewalkSluice
     {
         static void Main(string[] args)
         {
-            //ControlGateWay();
 
-          
             SetAlarm();
+            SendDownCardID();
 
-           // SendDownCardID();
             Console.ReadLine();
         }
 
@@ -223,7 +221,8 @@ namespace HCSidewalkSluice
                 ////启用布防
                 CHCNetSDK.NET_DVR_SETUPALARM_PARAM struSetupParam = new CHCNetSDK.NET_DVR_SETUPALARM_PARAM();
                 struSetupParam.dwSize = (uint)Marshal.SizeOf(struSetupParam);
-                struSetupParam.byLevel = (byte)1;
+                // struSetupParam.byLevel = (byte)1;
+                struSetupParam.byDeployType = 1;
                 int lHandle = CHCNetSDK.NET_DVR_SetupAlarmChan_V41(m_lUserID, ref struSetupParam);
                 if (lHandle < 0)
                 {
@@ -232,7 +231,7 @@ namespace HCSidewalkSluice
                     CHCNetSDK.NET_DVR_Cleanup();
                 }
                 ////等待 60s，等待接收设备上传报警
-                //Thread.Sleep(60000);
+                //Thread.Sleep(600000);
                 ////撤销布防
                 //if (!CHCNetSDK.NET_DVR_CloseAlarmChan_V30(lHandle))
                 //{
