@@ -60,25 +60,7 @@ namespace HCSidewalkSluice
                         var result = Marshal.PtrToStructure(pAlarmInfo, typeof(CHCNetSDK.NET_DVR_ACS_ALARM_INFO));
                         struAcsAlarmInfo = (CHCNetSDK.NET_DVR_ACS_ALARM_INFO)result;
 
-                        Console.WriteLine(StrAlarmInfo(struAcsAlarmInfo));
-                        //switch (struAcsAlarmInfo.dwMajor)
-                        //{
-                        //    case CHCNetSDK.MAJOR_ALARM:
-                        //        Console.WriteLine(StrAlarmInfo(struAcsAlarmInfo));
-                        //        break;
-                        //    case CHCNetSDK.MAJOR_EXCEPTION:
-                        //        Console.WriteLine("异常");
-                        //        break;
-                        //    case CHCNetSDK.MAJOR_OPERATION:
-                        //        Console.WriteLine("操作");
-                        //        break;
-                        //    case CHCNetSDK.MAJOR_EVENT:
-                        //        Console.WriteLine("事件");
-                        //        break;
-                        //    default:
-                        //        break;
-                        //}
-
+                        Console.WriteLine("门禁主机报警信息：" + StrAlarmInfo(struAcsAlarmInfo));
                         //按需处理报警信息结构体中的信息......
                         break;
                     }
@@ -92,8 +74,11 @@ namespace HCSidewalkSluice
                 case CHCNetSDK.COMM_PASSNUM_INFO_ALARM://门禁通行人数信息
                     {
                         CHCNetSDK.NET_DVR_PASSNUM_INFO_ALARM struPassnumInfo = new CHCNetSDK.NET_DVR_PASSNUM_INFO_ALARM();
-                        Marshal.PtrToStructure(pAlarmInfo, struPassnumInfo);
+
+                        var result = Marshal.PtrToStructure(pAlarmInfo, typeof(CHCNetSDK.NET_DVR_PASSNUM_INFO_ALARM));
+                        struPassnumInfo = (CHCNetSDK.NET_DVR_PASSNUM_INFO_ALARM)result;
                         //按需处理报警信息结构体中的信息......
+                        Console.WriteLine("门禁通行人数信息:"+struPassnumInfo.ToString ());
                         break;
                     }
                 default:
@@ -102,6 +87,7 @@ namespace HCSidewalkSluice
             return true;
         }
 
+        #region 门禁主机报警信息
         /// <summary>
         /// 门禁主机报警信息
         /// </summary>
@@ -111,14 +97,21 @@ namespace HCSidewalkSluice
         {
             DateTime dtime = new DateTime((int)sAlarm.struTime.dwYear, (int)sAlarm.struTime.dwMonth, (int)sAlarm.struTime.dwDay, (int)sAlarm.struTime.dwHour, (int)sAlarm.struTime.dwMinute, (int)sAlarm.struTime.dwSecond);
             string time = dtime.ToString("yyyy-MM-dd HH:mm:ss");
-            string netUser = Encoding.UTF8.GetString(sAlarm.sNetUser);
-            string details = Encoding.UTF8.GetString(StructToBytes(sAlarm.struAcsEventInfo));
-            string result = (GetMajorType(sAlarm.dwMajor, sAlarm.dwMinor) + ",报警时间：" + time + ",网络操作的用户名:" + netUser + ",远程主机地址" + sAlarm.struRemoteHostAddr.sIpV4 + "\r\n" + ",报警信息详细参数:" + details + ",");
+            string netUser = Encoding.UTF8.GetString(sAlarm.sNetUser).TrimEnd('\0');
+
+            byte[] ipv6 = sAlarm.struRemoteHostAddr.sIpV6;
+            string ipAddress = "ipV4=" + sAlarm.struRemoteHostAddr.sIpV4.TrimEnd('\0') + "，ipV6=" +
+                Encoding.UTF8.GetString(ipv6).TrimEnd('\0');
+
+            //string details = Encoding.UTF8.GetString(StructToBytes(sAlarm.struAcsEventInfo));
+            string details = sAlarm.struAcsEventInfo.ToString();
+
+            string result = (GetMajorType(sAlarm.dwMajor, sAlarm.dwMinor) + "，报警时间=" + time + "，网络操作的用户名=" + netUser + "，远程主机地址，" + ipAddress + "，报警信息详细参数，" + details);
             return result;
         }
 
         /// <summary>
-        /// 获取主类型、此类型
+        /// 获取主类型、次类型
         /// </summary>
         /// <param name="dwMajor"></param>
         /// <returns></returns>
@@ -128,18 +121,19 @@ namespace HCSidewalkSluice
             switch (dwMajor)
             {
                 case CHCNetSDK.MAJOR_ALARM:
-                    major = "主类型:报警，" + "次类型：" + dwMinor;
+                    major = "主类型=报警，" + "次类型：" + dwMinor;
                     break;
                 case CHCNetSDK.MAJOR_EXCEPTION:
-                    major = "主类型:异常，" + "次类型：" + dwMinor;
+                    major = "主类型=异常，" + "次类型：" + dwMinor;
                     break;
                 case CHCNetSDK.MAJOR_OPERATION:
-                    major = "主类型:操作，" + "次类型：" + GetMinorTypeAlarm(dwMinor);
+                    major = "主类型=操作，" + "次类型：" + GetMinorTypeAlarm(dwMinor);
                     break;
                 case CHCNetSDK.MAJOR_EVENT:
-                    major = "主类型:事件，" + "次类型：" + GetMinorTypeEvent(dwMinor);
+                    major = "主类型=事件，" + "次类型：" + GetMinorTypeEvent(dwMinor);
                     break;
                 default:
+                    major = "主类型：" + dwMajor.ToString() + "次类型：" + dwMinor;
                     break;
             }
             return major;
@@ -446,6 +440,20 @@ namespace HCSidewalkSluice
             }
             return minor;
         }
+
+
+        #endregion
+
+
+
+
+
+        #region 门禁通行人数信息
+
+
+        #endregion
+
+
 
         /// <summary>
         /// 将结构体转为byte[]

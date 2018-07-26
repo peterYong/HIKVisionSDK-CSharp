@@ -16,7 +16,7 @@ namespace HCSidewalkSluice
         {
 
             SetAlarm();
-            SendDownCardID();
+             SendDownCardID();
 
             Console.ReadLine();
         }
@@ -102,9 +102,9 @@ namespace HCSidewalkSluice
                     Console.WriteLine("NET_DVR_SendRemoteConfig Success!");
                 }
                 //退出
-                Thread.Sleep(5000);
-                CHCNetSDK.NET_DVR_Logout(m_lUserID);
-                CHCNetSDK.NET_DVR_Cleanup();
+                //Thread.Sleep(5000);
+                //CHCNetSDK.NET_DVR_Logout(m_lUserID);
+                //CHCNetSDK.NET_DVR_Cleanup();
 
                 Console.WriteLine("-----------------------------------");
             }
@@ -198,7 +198,7 @@ namespace HCSidewalkSluice
                 if (m_lUserID == -1)
                 {
                     uint iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    string strErr = "NET_DVR_Login_V30 failed, error code= " + iLastErr;
+                    string strErr = "NET_DVR_Login_V30 failed,ip:port=" + DVRIPAddress + ":" + DVRPortNumber + "! error code= " + iLastErr;
                     Console.WriteLine(strErr);
                 }
                 else

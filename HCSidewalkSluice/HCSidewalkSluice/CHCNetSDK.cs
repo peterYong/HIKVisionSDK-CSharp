@@ -707,19 +707,19 @@ namespace HCSidewalkSluice
         /// <summary>
         /// 报警
         /// </summary>
-        public const int MAJOR_ALARM = 0x01;
+        public const int MAJOR_ALARM = 0x1;
         /// <summary>
         /// 异常
         /// </summary>
-        public const int MAJOR_EXCEPTION = 0x02;
+        public const int MAJOR_EXCEPTION = 0x2;
         /// <summary>
         /// 操作
         /// </summary>
-        public const int MAJOR_OPERATION = 0x03;
+        public const int MAJOR_OPERATION = 0x3;
         /// <summary>
         /// 事件
         /// </summary>
-        public const int MAJOR_EVENT = 0x04;
+        public const int MAJOR_EVENT = 0x5;
 
         #region 操作
         public const int MINOR_LOCAL_LOGIN = 0x50;//本地登录
@@ -928,7 +928,7 @@ namespace HCSidewalkSluice
             /// 设备IPv6地址
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 128, ArraySubType = UnmanagedType.I1)]
-            public byte[] byRes;
+            public byte[] sIpV6;
 
 
         }
@@ -1063,10 +1063,136 @@ namespace HCSidewalkSluice
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 4, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
 
+            /// <summary>
+            /// 自己增加一个方法，用于将结构体中的信息转为字符串
+            /// </summary>
+            /// <returns></returns>
+            public override string ToString()
+            {
+                StringBuilder stb = new StringBuilder();
+                string cardid = Encoding.UTF8.GetString(byCardNo);
+                //if (!string.IsNullOrEmpty(cardid.Trim()))
+                if (!string.IsNullOrEmpty(cardid.TrimEnd('\0')))
+                {
+                    stb.Append("卡号=" + cardid);
+                }
+                stb.Append("，卡类型=" + GetCardType(byCardType));
+                stb.Append("，白名单号=" + byWhiteListNo.ToString());
+                stb.Append("，报告上传通道=" + byReportChannel.ToString());
+                stb.Append("，读卡器类型=" + GetCardReaderKind(byCardReaderKind));
+                stb.Append("，读卡器编号=" + dwCardReaderNo.ToString());
+                stb.Append("，门编号=" + GetDoorNO(dwDoorNo));
+                stb.Append("，多重卡认证序号=" + dwVerifyNo.ToString());
+                stb.Append("，报警输入号=" + dwAlarmInNo.ToString());
+
+                stb.Append("，报警输出号=" + dwAlarmOutNo.ToString());
+                stb.Append("，事件触发器编号 = " + dwCaseSensorNo.ToString());
+                stb.Append("，RS485通道号=" + dwRs485No.ToString());
+                stb.Append("，群组编号=" + dwMultiCardGroupNo.ToString());
+                stb.Append("，设备编号 = " + byDeviceNo.ToString());
+                stb.Append("，分控器编号=" + byDistractControlNo.ToString());
+                stb.Append("，工号=" + dwEmployeeNo.ToString());
+                stb.Append("，就地控制器编号=" + wLocalControllerID.ToString());
+
+                stb.Append("，网口ID = " + byInternetAccess.ToString());
+                stb.Append("，防区类型=" + byType.ToString());
+                string macAddr = Encoding.UTF8.GetString(byMACAddr);
+                if (!string.IsNullOrEmpty(macAddr.TrimEnd('\0')))
+                {
+                    stb.Append("，物理地址=" + macAddr);
+                }
+                stb.Append("，刷卡类型=" + bySwipeCardType.ToString());
+
+                stb.Append("，事件流水号 = " + dwSerialNo.ToString());
+                stb.Append("，通道控制器ID=" + byChannelControllerID.ToString());
+                stb.Append("，通道控制器灯板ID=" + byChannelControllerLampID.ToString());
+                stb.Append("，通道控制器红外转接板ID=" + byChannelControllerIRAdaptorID.ToString());
+                stb.Append("，通道控制器红外对射ID=" + byChannelControllerIREmitterID.ToString());
+
+                return stb.ToString();
+            }
         }
 
+        private static string GetCardType(byte cardType)
+        {
+            string result = cardType.ToString();
+            switch (cardType)
+            {
+                case 0:
+                    result = "无效";
+                    break;
+                case 1:
+                    result = "普通卡";
+                    break;
+                case 2:
+                    result = "残疾人卡";
+                    break;
+                case 3:
+                    result = "黑名单卡";
+                    break;
+                case 4:
+                    result = "巡更卡";
+                    break;
+                case 5:
+                    result = "胁迫卡";
+                    break;
+                case 6:
+                    result = "超级卡";
+                    break;
+                case 7:
+                    result = "来宾卡";
+                    break;
+                case 8:
+                    result = "解除卡";
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
 
+        private static string GetCardReaderKind(byte cardReaderKind)
+        {
+            string result = cardReaderKind.ToString();
+            switch (cardReaderKind)
+            {
+                case 0:
+                    result = "无效";
+                    break;
+                case 1:
+                    result = "IC读卡器";
+                    break;
+                case 2:
+                    result = "身份证读卡器";
+                    break;
+                case 3:
+                    result = "二维码读卡器";
+                    break;
+                case 4:
+                    result = "指纹头";
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
 
+        private static string GetDoorNO(uint doorNo)
+        {
+            string result = doorNo.ToString();
+            switch (doorNo)
+            {
+                case 1:
+                    result = "进";
+                    break;
+                case 2:
+                    result = "出";
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
 
         /// <summary>
         /// 身份证刷卡信息上传结构体。
@@ -1103,17 +1229,84 @@ namespace HCSidewalkSluice
         [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct NET_DVR_PASSNUM_INFO_ALARM
         {
-            //DWORD dwSize;
-            //DWORD dwAccessChannel;
-            //NET_DVR_TIME_V30 struSwipeTime;
-            //BYTE byNetUser[MAX_NAMELEN];
-            //NET_DVR_IPADDR struRemoteHostAddr;
-            //DWORD dwEntryTimes;
-            //DWORD dwExitTimes;
-            //DWORD dwTotalTimes;
-            //BYTE byRes[300];
+            public uint dwSize;
+            /// <summary>
+            /// 人员通道号 
+            /// </summary>
+            public uint dwAccessChannel;
+            /// <summary>
+            /// 刷卡时间 
+            /// </summary>
+            public NET_DVR_TIME_V30 struSwipeTime;
+
+            /// <summary>
+            /// 网络操作的用户名  
+            /// </summary>
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_NAMELEN, ArraySubType = UnmanagedType.I1)]
+            public byte[] byNetUser;
+            /// <summary>
+            /// 远程主机地址 
+            /// </summary>
+            public NET_DVR_IPADDR struRemoteHostAddr;
+            /// <summary>
+            /// 人员进入次数 
+            /// </summary>
+            public uint dwEntryTimes;
+            /// <summary>
+            /// 人员离开次数 
+            /// </summary>
+            public uint dwExitTimes;
+            /// <summary>
+            /// 人员出入总次数
+            /// </summary>
+            public uint dwTotalTimes;
+            /// <summary>
+            /// 保留，置为0
+            /// </summary>
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 300, ArraySubType = UnmanagedType.I1)]
+            public byte[] byRes;
+
+            public override string ToString()
+            {
+                StringBuilder stb = new StringBuilder();
+                stb.Append("人员通道号=" + dwAccessChannel.ToString());
+                DateTime dtime = new DateTime((int)struSwipeTime.wYear, (int)struSwipeTime.byMonth, (int)struSwipeTime.byDay, (int)struSwipeTime.byHour, (int)struSwipeTime.byMinute, (int)struSwipeTime.bySecond);
+                string time = dtime.ToString("yyyy-MM-dd HH:mm:ss");
+                stb.Append("，刷卡时间=" + time.ToString());
+                stb.Append("，网络操作的用户名=" + Encoding.UTF8.GetString(byNetUser).TrimEnd('\0'));
+                stb.Append("，远程主机地址=" + struRemoteHostAddr.sIpV4.TrimEnd('\0'));
+                stb.Append("，人员进出次数=" + dwEntryTimes.ToString());
+                stb.Append("，人员离开次数=" + dwExitTimes.ToString());
+                stb.Append("，人员出入总次数=" + dwTotalTimes.ToString());
+                return stb.ToString();
+            }
+        }
+
+        /// <summary>
+        /// 时间参数结构体
+        /// </summary>
+        [StructLayoutAttribute(LayoutKind.Sequential)]
+        public struct NET_DVR_TIME_V30
+        {
+            public ushort wYear;
+            public byte byMonth;
+            public byte byDay;
+            public byte byHour;
+            public byte byMinute;
+            public byte bySecond;
+            /// <summary>
+            /// 保留
+            /// </summary>
+            public byte byRes;
+            /// <summary>
+            /// 毫秒
+            /// </summary>
+            public ushort wMilliSec;
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.I1)]
+            public byte[] byRes1;
 
         }
+
 
 
         /// <summary>
